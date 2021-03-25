@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:CollectionViewVSMSample"
+             x:Name="MyPage"
+             x:Class="CollectionViewVSMSample.MainPage">
+    <ContentPage.BindingContext>
+        <viewModel:EmployeeViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <DataTemplate x:Key="SampleItemTemplate">
+            <!--<SwipeView>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup>
+                        <VisualState Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark=Black, Light=White}"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="Red"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>-->
+            <Grid HeightRequest="50">
+                <!-- Option 1. In order to get expected result, comment VSM from the Grid and UnComment SwipeView -->
+                <!-- Option 2. Remove GestureRecognizers from the Grid and the VSM works as expected without having SwipeView -->
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup>
+                        <VisualState Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark=Black, Light=White}"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="Red"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <Label Grid.Row="0" Text="{Binding Name}" VerticalOptions="Center"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="2" Command="{Binding BindingContext.DoubleTapCommand, Source={x:Reference MyPage}}" CommandParameter="{Binding .}"/>
+                    <SwipeGestureRecognizer Direction="Right" Command="{Binding BindingContext.NextCommand, Source={x:Reference MyPage}}"/>
+                    <SwipeGestureRecognizer Direction="Left" Command="{Binding BindingContext.PreviousCommand, Source={x:Reference MyPage}}"/>
+                </Grid.GestureRecognizers>
+            </Grid>
+            <!--</SwipeView>-->
+        </DataTemplate>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid RowDefinitions="Auto,*" RowSpacing="20">
+            <Label Grid.Row="0" Text="Collection View VSM Sample" FontSize="20" HorizontalOptions="Center"/>
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}" SelectionMode="Single" 
+                        FlowDirection="RightToLeft" ItemTemplate="{StaticResource SampleItemTemplate}" x:Name="SampleCollectionView">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
+            </CollectionView.ItemsLayout>
+        </CollectionView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
